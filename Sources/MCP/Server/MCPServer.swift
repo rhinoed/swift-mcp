@@ -1,5 +1,5 @@
 // Copyright © Anthony DePasquale
-
+    import Logging
 /// High-level MCP server providing ergonomic APIs for tools, resources, and prompts.
 ///
 /// `MCPServer` provides:
@@ -442,16 +442,18 @@ public actor MCPServer {
     ///
     /// This is a convenience method for single-session transports like stdio.
     /// For HTTP with multiple clients, use `createSession()` instead.
-    public func run(transport: TransportType) async throws {
+    public func run(using transport: TransportType, with logger: Logger?) async throws {
         let session = await createSession()
 
         switch transport {
             case .stdio:
-                let stdioTransport = StdioTransport()
+                let stdioTransport = StdioTransport(logger: logger)
                 try await session.start(transport: stdioTransport)
+                await session.waitUntilCompleted()
 
             case let .custom(customTransport):
                 try await session.start(transport: customTransport)
+                await session.waitUntilCompleted()
         }
     }
 }
