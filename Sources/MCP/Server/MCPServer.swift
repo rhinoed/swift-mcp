@@ -522,7 +522,7 @@ public extension MCPServer {
     /// - Returns: An array of `RegisteredTool` for managing the tools.
     /// - Throws: `MCPError.invalidParams` if any tool name is already registered.
     @discardableResult
-    func register(@ToolBuilder tools: () -> [any ToolSpec.Type]) async throws -> [RegisteredTool] {
+    func register(@ToolBuilder tools: @Sendable () -> [any ToolSpec.Type]) async throws -> [RegisteredTool] {
         let onListChanged = toolListChangedCallback
         var registeredTools: [RegisteredTool] = []
         for tool in tools() {
@@ -753,7 +753,7 @@ public extension MCPServer {
     /// - Returns: An array of `RegisteredPrompt` for managing the prompts.
     /// - Throws: `MCPError.invalidParams` if any prompt name is already registered.
     @discardableResult
-    func register(@PromptBuilder prompts: () -> [any PromptSpec.Type]) async throws -> [RegisteredPrompt] {
+    func register(@PromptBuilder prompts: @Sendable () -> [any PromptSpec.Type]) async throws -> [RegisteredPrompt] {
         let onListChanged = promptListChangedCallback
         var registeredPrompts: [RegisteredPrompt] = []
         for prompt in prompts() {
